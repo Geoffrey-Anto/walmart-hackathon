@@ -6,8 +6,8 @@ import Auth from "./screens/Auth/Auth";
 import ConsumerNav from "./screens/Navigation/ConsumerNav";
 
 export default function App() {
-  const [authenticated, setAuthenticated] = React.useState(true);
-
+  const [authenticated, setAuthenticated] = React.useState(false);
+  
   return (
     <NavigationContainer>
       {authenticated ? (

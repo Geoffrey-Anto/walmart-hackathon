@@ -79,29 +79,6 @@ export default function Auth(props: { setAuthenticated: any }) {
               </TouchableOpacity>
             );
           })}
-          {/* <TouchableOpacity
-            onPress={() => setAccountType("consumer")}
-            className={`${
-              accountType === "consumer" ? "border-2 border-black" : ""
-            } bg-gray-200 w-1/3 flex flex-col items-center rounded-xl p-2`}
-          >
-            <Text className="text-gray-700">Customer</Text>
-            <Image source={require("../../assets/consumer.png")} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setAccountType("retailer")}
-            className="bg-gray-200 w-1/3 flex flex-col items-center rounded-xl p-2"
-          >
-            <Text className="text-gray-700">Retailer</Text>
-            <Image source={require("../../assets/retailer.png")} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setAccountType("admin")}
-            className="bg-gray-200 w-1/3 flex flex-col items-center rounded-xl p-2"
-          >
-            <Text className="text-gray-700">Admin</Text>
-            <Image source={require("../../assets/admin.png")} />
-          </TouchableOpacity> */}
         </View>
       </View>
 
@@ -133,9 +110,12 @@ export default function Auth(props: { setAuthenticated: any }) {
               <Image source={require("../../assets/google.png")} />
               <Text>Google</Text>
             </View>
-            <View className="rounded-xl p-3 flex flex-col items-center bg-blue-500 w-full">
+            <TouchableOpacity
+              onPress={() => props.setAuthenticated(true)}
+              className="rounded-xl p-3 flex flex-col items-center bg-blue-500 w-full"
+            >
               <Text className="text-white">Login</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       ) : (
@@ -171,9 +151,12 @@ export default function Auth(props: { setAuthenticated: any }) {
           </View>
 
           <View className="flex flex-col gap-2 justify-center items-center mt-8">
-            <View className="rounded-xl p-3 bg-blue-500 flex flex-col items-center w-full justify-center">
+            <TouchableOpacity
+              onPress={() => props.setAuthenticated(true)}
+              className="rounded-xl p-3 bg-blue-500 flex flex-col items-center w-full justify-center"
+            >
               <Text className="text-white">SignUp</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       )}
