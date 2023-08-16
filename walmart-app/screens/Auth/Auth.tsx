@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 
-export default function Auth() {
+export default function Auth(props: { setAuthenticated: any }) {
   const [authMode, setAuthMode] = useState("login");
   const [accountType, setAccountType] = useState("");
 
