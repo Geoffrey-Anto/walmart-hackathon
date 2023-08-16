@@ -6,12 +6,105 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+enum Role {
+  ADMIN
+  RETAILER
+  CUSTOMER
+}
+
+// --------------------------------------------------------------------------------------------------------------
+
+model Admin {
+  id        Int               @id @default(autoincrement())
+  email     String            @unique
+  password  String
+  products  SupplierProduct[]
+  name      String
+  role      Role
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  orders    SupplierOrder[]
+}
+
+model SupplierOrder {
+  id        Int               @id @default(autoincrement())
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  products  SupplierProduct[]
+  Admin     Admin?            @relation(fields: [adminId], references: [id])
+  adminId   Int?
+}
+
+model SupplierProduct {
+  id              Int            @id @default(autoincrement())
+  name            String
+  price           Float
+  quantity        Int
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  SupplierOrder   SupplierOrder? @relation(fields: [supplierOrderId], references: [id])
+  supplierOrderId Int?
+  Admin           Admin?         @relation(fields: [adminId], references: [id])
+  adminId         Int?
+}
+
+// --------------------------------------------------------------------------------------------------------------
+
+model Retailer {
+  id        Int             @id @default(autoincrement())
+  email     String          @unique
+  password  String
+  name      String
+  role      Role
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  products  RetailerOrder[]
+  Store     Store?          @relation(fields: [storeId], references: [id])
+  storeId   Int?            @unique
+}
+
+model RetailerOrder {
+  id         Int               @id @default(autoincrement())
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  products   RetailerProduct[]
+  Retailer   Retailer?         @relation(fields: [retailerId], references: [id])
+  retailerId Int?
+}
+
+model RetailerProduct {
+  id              Int            @id @default(autoincrement())
+  name            String
+  price           Float
+  quantity        Int
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  RetailerOrder   RetailerOrder? @relation(fields: [retailerOrderId], references: [id])
+  retailerOrderId Int?
+}
+
+// --------------------------------------------------------------------------------------------------------------
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Store {
+  id         Int       @id @default(autoincrement())
+  name       String
+  address    String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  retailerId Int?
+  Retailer   Retailer?
 }
