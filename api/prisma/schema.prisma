@@ -27,64 +27,36 @@ model Admin {
   role      Role
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
-  orders    SupplierOrder[]
-}
-
-model SupplierOrder {
-  id        Int               @id @default(autoincrement())
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  products  SupplierProduct[]
-  Admin     Admin?            @relation(fields: [adminId], references: [id])
-  adminId   Int?
 }
 
 model SupplierProduct {
-  id              Int            @id @default(autoincrement())
-  name            String
-  price           Float
-  quantity        Int
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  SupplierOrder   SupplierOrder? @relation(fields: [supplierOrderId], references: [id])
-  supplierOrderId Int?
-  Admin           Admin?         @relation(fields: [adminId], references: [id])
-  adminId         Int?
+  id         Int       @id @default(autoincrement())
+  name       String
+  price      Float
+  quantity   Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Admin      Admin?    @relation(fields: [adminId], references: [id])
+  adminId    Int?
+  Retailer   Retailer? @relation(fields: [retailerId], references: [id])
+  retailerId Int?
 }
 
 // --------------------------------------------------------------------------------------------------------------
 
 model Retailer {
-  id        Int             @id @default(autoincrement())
-  email     String          @unique
-  password  String
-  name      String
-  role      Role
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  products  RetailerOrder[]
-  Store     Store?          @relation(fields: [storeId], references: [id])
-  storeId   Int?            @unique
-}
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  name     String
+  role     Role
 
-model RetailerOrder {
-  id         Int               @id @default(autoincrement())
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @updatedAt
-  products   RetailerProduct[]
-  Retailer   Retailer?         @relation(fields: [retailerId], references: [id])
-  retailerId Int?
-}
+  products SupplierProduct[]
 
-model RetailerProduct {
-  id              Int            @id @default(autoincrement())
-  name            String
-  price           Float
-  quantity        Int
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  RetailerOrder   RetailerOrder? @relation(fields: [retailerOrderId], references: [id])
-  retailerOrderId Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Store     Store?   @relation(fields: [storeId], references: [id])
+  storeId   Int?     @unique
 }
 
 // --------------------------------------------------------------------------------------------------------------
